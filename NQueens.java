@@ -1,4 +1,6 @@
 public class NQueens {
+    static int count = 0;
+
     public static void nQueensAllWays(char[][] board, int row) {
         if (row == board.length) {
             printBoard(board);
@@ -15,6 +17,24 @@ public class NQueens {
             // board[row][j] = 'Q';
             // nQueensAllWays(board, row + 1);
             // board[row][j] = '.';
+        }
+    }
+
+    public static void nQueensCountWays(char[][] board, int row) {
+        if (row == board.length) {
+            // printBoard(board);
+
+            count++;
+
+            return;
+        }
+
+        for (int j = 0; j < board.length; j++) {
+            if (isSafe(board, row, j)) {
+                board[row][j] = 'Q';
+                nQueensCountWays(board, row + 1);
+                board[row][j] = '.';
+            }
         }
     }
 
@@ -55,7 +75,7 @@ public class NQueens {
     }
 
     public static void main(String[] args) {
-        int n = 2;
+        int n = 4;
         char[][] board = new char[n][n];
 
         for (int i = 0; i < n; i++) {
@@ -64,6 +84,9 @@ public class NQueens {
             }
         }
 
-        nQueensAllWays(board, 0);
+        // nQueensAllWays(board, 0);
+        nQueensCountWays(board, 0);
+
+        System.out.println("Number of ways: " + count);
     }
 }
