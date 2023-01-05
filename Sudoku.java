@@ -1,9 +1,7 @@
 public class Sudoku {
     public static boolean sudokuSolver(int[][] sudoku, int row, int col) {
-        if (row == 9 && col == 9) {
+        if (row == 9 && col == 0) {
             return true;
-        } else if (row == 9) {
-            return false;
         }
 
         int nextRow = row, nextCol = col + 1;
@@ -79,8 +77,11 @@ public class Sudoku {
                 { 8, 2, 7, 0, 0, 9, 0, 1, 3 }
         };
 
-        System.out.println(sudokuSolver(sudoku, 0, 0));
+        if (sudokuSolver(sudoku, 0, 0)) {
+            printSudoku(sudoku);
+        } else {
+            System.out.println("Solution not possible");
+        }
 
-        printSudoku(sudoku);
     }
 }
