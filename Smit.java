@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class Smit {
-    private static void generateNumbers(int[] numArray) {
+    public static void generateNumbers(int[] numArray) {
         Random rng = new Random();
 
         numArray[0] = rng.nextInt(1, 50);
@@ -21,7 +21,7 @@ public class Smit {
         }
     }
 
-    private static String buildString(int[] numArray) {
+    public static String buildString(int[] numArray) {
         StringBuilder str = new StringBuilder("");
 
         for (int i = 0; i < numArray.length; i++) {
@@ -31,7 +31,7 @@ public class Smit {
         return str.toString();
     }
 
-    private static int compareArrays(int[] arr1, int[] arr2) {
+    public static int compareArrays(int[] arr1, int[] arr2) {
         return 0;
     }
 
