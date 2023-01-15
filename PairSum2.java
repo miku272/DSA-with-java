@@ -11,8 +11,13 @@ public class PairSum2 {
             }
         }
 
-        rightPointer = breakingPoint;
-        leftPointer = breakingPoint + 1;
+        if (breakingPoint != -1) {
+            rightPointer = breakingPoint;
+            leftPointer = breakingPoint + 1;
+        } else {
+            rightPointer = list.size() - 1;
+            leftPointer = 0;
+        }
 
         while (leftPointer != rightPointer) {
             if (list.get(leftPointer) + list.get(rightPointer) == target) {
