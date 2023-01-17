@@ -148,9 +148,9 @@ public class LinkedListClass {
         return -1;
     }
 
-    public int recursiveSearch(int key) {
-        
-    }
+    // public int recursiveSearch(int key) {
+
+    // }
 
     public void printLinkedList() {
         Node node = head;
