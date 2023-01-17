@@ -102,7 +102,22 @@ public class LinkedListClass {
     }
 
     public int removeLast() {
-        int data = tail.data;
+        int data;
+
+        if (listSize == 0) {
+            System.out.println("Linked list is empty");
+
+            return Integer.MIN_VALUE;
+        } else if (listSize == 1) {
+            data = tail.data;
+            head = tail = null;
+
+            listSize--;
+
+            return data;
+        }
+        
+        data = tail.data;
         Node node = head;
         
         while (node.next != tail) {
