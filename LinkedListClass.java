@@ -116,7 +116,7 @@ public class LinkedListClass {
 
             return data;
         }
-        
+
         data = tail.data;
         Node node = head;
         
@@ -125,10 +125,31 @@ public class LinkedListClass {
         }
 
         node.next = null;
+        tail = node;
 
         listSize--;
 
         return data;
+    }
+
+    public int itrSearch(int key) {
+        Node node = head;
+        int index = 0;
+
+        while (node != null) {
+            if (node.data == key) {
+                return index;
+            }
+
+            node = node.next;
+            index++;
+        }
+
+        return -1;
+    }
+
+    public int recursiveSearch(int key) {
+        
     }
 
     public void printLinkedList() {
@@ -160,6 +181,14 @@ public class LinkedListClass {
 
         ll.printLinkedList();
 
-        System.out.println(ll.size());
+        System.out.println("Size of linked list: " + ll.size());
+
+        int index = ll.itrSearch(1);
+
+        if (index == -1) {
+            System.out.println("Key not found in the link list");
+        } else {
+            System.out.println("Key 1 was found at index: " + index);
+        }
     }
 }
