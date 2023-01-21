@@ -132,6 +132,37 @@ public class LinkedListClass {
         return data;
     }
 
+    public int removeNthNodeFromEnd(int index) {
+        int size = 0, data = 0;
+        Node node = head;
+
+        // Calculate Size
+        while (node != null) {
+            size++;
+            node = node.next;
+        }
+
+        if (index == size) {
+            data = head.data;
+            head = head.next;
+            listSize--;
+
+            return data;
+        }
+
+        int indexToFind = size - index;
+        node = head;
+
+        for (int i = 1; i < indexToFind; i++) {
+            node = node.next;
+        }
+
+        data = node.next.data;
+        node.next = node.next.next;
+
+        return data;
+    }
+
     public int itrSearch(int key) {
         Node node = head;
         int index = 0;
@@ -151,6 +182,42 @@ public class LinkedListClass {
     // public int recursiveSearch(int key) {
 
     // }
+
+    private Node findMid(Node head) {
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
+    }
+
+    public boolean checkPalindrome() {
+        if (head == null || head.next == null) { {
+            return true;
+        }
+
+        }
+
+        //Step 1 - Find mid
+        Node midNode = findMid(head);
+
+        // Step 2 - reverse 2nd half
+        Node prev = null;
+        Node curr = midNode;
+        Node next;
+
+        while (curr != null) {
+            
+        }
+
+        // Step 3 - Check the equality of 1st and reversed 2nd half
+
+        return true;
+    }
 
     public void printLinkedList() {
         Node node = head;
@@ -181,14 +248,14 @@ public class LinkedListClass {
 
         ll.printLinkedList();
 
-        System.out.println("Size of linked list: " + ll.size());
+        // System.out.println("Size of linked list: " + ll.size());
 
-        int index = ll.itrSearch(1);
+        // int index = ll.itrSearch(1);
 
-        if (index == -1) {
-            System.out.println("Key not found in the link list");
-        } else {
-            System.out.println("Key 1 was found at index: " + index);
-        }
+        // if (index == -1) {
+        //     System.out.println("Key not found in the link list");
+        // } else {
+        //     System.out.println("Key 1 was found at index: " + index);
+        // }
     }
 }
