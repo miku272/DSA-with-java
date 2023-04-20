@@ -119,7 +119,7 @@ public class LinkedListClass {
 
         data = tail.data;
         Node node = head;
-        
+
         while (node.next != tail) {
             node = node.next;
         }
@@ -196,13 +196,14 @@ public class LinkedListClass {
     }
 
     public boolean checkPalindrome() {
-        if (head == null || head.next == null) { {
-            return true;
-        }
+        if (head == null || head.next == null) {
+            {
+                return true;
+            }
 
         }
 
-        //Step 1 - Find mid
+        // Step 1 - Find mid
         Node midNode = findMid(head);
 
         // Step 2 - reverse 2nd half
@@ -211,10 +212,24 @@ public class LinkedListClass {
         Node next;
 
         while (curr != null) {
-            
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
 
+        Node right = prev;
+        Node left = head;
+
         // Step 3 - Check the equality of 1st and reversed 2nd half
+        while (right != null) {
+            if (left.data != right.data) {
+                return false;
+            }
+
+            left = left.next;
+            right = right.next;
+        }
 
         return true;
     }
@@ -233,29 +248,58 @@ public class LinkedListClass {
         return listSize;
     }
 
+    public static boolean isCycle() {
+        Node slow = head;
+        Node fast = head;
+
+        while (fast.next != null || fast == null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
-        LinkedListClass ll = new LinkedListClass();
+        // LinkedListClass ll = new LinkedListClass();
 
-        ll.addfirst(3);
-        ll.addfirst(2);
-        ll.addfirst(1);
+        // ll.addfirst(3);
+        // ll.addfirst(2);
+        // ll.addfirst(1);
 
-        ll.addLast(4);
-        ll.addLast(5);
-        ll.addLast(7);
+        // ll.addLast(4);
+        // ll.addLast(5);
+        // ll.addLast(7);
 
-        ll.add(5, 6);
+        // ll.add(5, 6);
 
-        ll.printLinkedList();
+        // ll.addLast(1);
+        // ll.addLast(2);
+        // ll.addLast(1);
+
+        // ll.printLinkedList();
+        // System.out.println(ll.checkPalindrome());
 
         // System.out.println("Size of linked list: " + ll.size());
 
         // int index = ll.itrSearch(1);
 
         // if (index == -1) {
-        //     System.out.println("Key not found in the link list");
+        // System.out.println("Key not found in the link list");
         // } else {
-        //     System.out.println("Key 1 was found at index: " + index);
+        // System.out.println("Key 1 was found at index: " + index);
         // }
+
+        // Check loop in LL
+        // head = new Node(1);
+        // head.next = new Node(2);
+        // head.next.next = new Node(3);
+        // head.next.next.next = head;
+
+        // System.out.println(isCycle());
     }
 }
