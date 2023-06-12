@@ -264,6 +264,73 @@ public class LinkedListClass {
         return false;
     }
 
+    private Node getMid(Node head) {
+        Node slow = head;
+        Node fast = head.next;
+
+        while (fast.next != null || fast != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow; // Mid node
+    }
+
+    private Node merge(Node leftHalf, Node rightHalf) {
+        Node mergedLL = new Node(-1);
+        Node temp = mergedLL;
+
+        while (leftHalf != null && rightHalf != null) {
+            if (leftHalf.data <= rightHalf.data) {
+                temp.next = leftHalf;
+
+                leftHalf = leftHalf.next;
+                temp = temp.next;
+            } else {
+                temp.next = rightHalf;
+
+                rightHalf = rightHalf.next;
+                temp = temp.next;
+            }
+        }
+
+        while (leftHalf != null) {
+            temp.next = leftHalf;
+
+            leftHalf = leftHalf.next;
+            temp = temp.next;
+        }
+
+        while (rightHalf != null) {
+            temp.next = rightHalf;
+
+            rightHalf = rightHalf.next;
+            temp = temp.next;
+        }
+
+        return mergedLL.next;
+    }
+
+    public Node mergeSort(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // Find mid
+        Node mid = getMid(head);
+
+        // merge sort on left and right half
+        Node rightHalf = mid.next;
+        mid.next = null;
+        Node leftHalf = head;
+
+        Node newLeft = mergeSort(leftHalf);
+        Node newRight = mergeSort(rightHalf);
+
+        // Merge left and right half
+        return merge(newLeft, newRight);
+    }
+
     public static void main(String[] args) {
         // LinkedListClass ll = new LinkedListClass();
 
@@ -301,5 +368,19 @@ public class LinkedListClass {
         // head.next.next.next = head;
 
         // System.out.println(isCycle());
+
+        LinkedListClass ll = new LinkedListClass();
+
+        ll.addfirst(1);
+        ll.addfirst(2);
+        ll.addfirst(3);
+        ll.addfirst(4);
+        ll.addfirst(5);
+
+        ll.printLinkedList();
+
+        head = ll.mergeSort(head);
+
+        ll.printLinkedList();
     }
 }
