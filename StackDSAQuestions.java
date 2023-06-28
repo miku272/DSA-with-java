@@ -47,6 +47,65 @@ public class StackDSAQuestions {
         }
     }
 
+    public static void printArray(int[] arr) {
+        for (int i : arr) {
+            System.out.print(i + " ");
+        }
+
+        System.out.print("\n");
+    }
+
+    public static void nextGreaterElement(int[] arr) {
+        int[] nextGreater = new int[arr.length];
+        Stack<Integer> s = new Stack<Integer>();
+
+        for (int i = arr.length - 1; i >= 0; i--) {
+            while (!s.isEmpty() && arr[s.peek()] <= arr[i]) {
+                s.pop();
+            }
+
+            if (s.isEmpty()) {
+                nextGreater[i] = -1;
+            } else {
+                nextGreater[i] = arr[s.peek()];
+            }
+
+            s.push(i);
+        }
+
+        printArray(arr);
+        printArray(nextGreater);
+    }
+
+    public static boolean isValidParentheses(String parentheses) {
+        Stack<Character> s = new Stack<Character>();
+
+        for (int i = 0; i < parentheses.length(); i++) {
+            char ch = parentheses.charAt(i);
+
+            if (ch == '(' || ch == '[' || ch == '{') {
+                s.push(ch);
+            } else {
+                if (s.isEmpty()) {
+                    return false;
+                }
+
+                if ((s.peek() == '(' && ch == ')') || (s.peek() == '[' && ch == ']')
+                        || (s.peek() == '{' && ch == '}')) {
+                    s.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        if (!s.isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) {
         // Stack<Integer> stack = new Stack<>();
 
@@ -61,13 +120,21 @@ public class StackDSAQuestions {
 
         // System.out.println(stack.toString());
 
-        int[] stocks = { 100, 80, 60, 70, 60, 85, 100 };
-        int[] span = new int[stocks.length];
+        // int[] stocks = { 100, 80, 60, 70, 60, 85, 100 };
+        // int[] span = new int[stocks.length];
 
-        stockSpan(stocks, span);
+        // stockSpan(stocks, span);
 
-        for (int i : span) {
-            System.out.print(i + " ");
-        }
+        // for (int i : span) {
+        // System.out.print(i + " ");
+        // }
+
+        // int[] arr = { 6, 8, 0, 1, 3 };
+
+        // nextGreaterElement(arr);
+
+        String parentheses = "({}{{}()})";
+
+        System.out.println(isValidParentheses(parentheses));
     }
 }
