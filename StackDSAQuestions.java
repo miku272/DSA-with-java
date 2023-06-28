@@ -106,35 +106,57 @@ public class StackDSAQuestions {
         return true;
     }
 
+    public static boolean isDuplicateParentheses(String expression) {
+        Stack<Character> s = new Stack<Character>();
+
+        for (int i = 0; i < expression.length(); i++) {
+            char ch = expression.charAt(i);
+
+            if (ch == ')') {
+                int count = 0;
+
+                while (s.peek() != '(') {
+                    s.pop();
+                    count++;
+                }
+
+                if (count < 1) {
+                    return true;
+                } else {
+                    s.pop();
+                }
+            } else {
+                s.push(ch);
+            }
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
         // Stack<Integer> stack = new Stack<>();
-
         // stack.push(1);
         // stack.push(2);
         // stack.push(3);
-
         // System.out.println(stack.toString());
-
         // // pushAtBottom(4, stack);
         // reverseStack(stack);
-
         // System.out.println(stack.toString());
 
         // int[] stocks = { 100, 80, 60, 70, 60, 85, 100 };
         // int[] span = new int[stocks.length];
-
         // stockSpan(stocks, span);
-
         // for (int i : span) {
         // System.out.print(i + " ");
         // }
 
         // int[] arr = { 6, 8, 0, 1, 3 };
-
         // nextGreaterElement(arr);
 
-        String parentheses = "({}{{}()})";
+        // String parentheses = "({}{{}()})";
+        // System.out.println(isValidParentheses(parentheses));
 
-        System.out.println(isValidParentheses(parentheses));
+        // String expression = "((a + b))";
+        // System.out.println(isDuplicateParentheses(expression));
     }
 }
