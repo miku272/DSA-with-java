@@ -133,6 +133,58 @@ public class StackDSAQuestions {
         return false;
     }
 
+    public static int maxAreaInHistogram(int[] heights) {
+        int[] nextSmallerLeft = new int[heights.length];
+        int[] nextSmallerRight = new int[heights.length];
+        int maxArea = 0;
+
+        // Calculating next smaller right
+        Stack<Integer> s = new Stack<Integer>();
+
+        for (int i = heights.length - 1; i >= 0; i--) {
+            while (!s.isEmpty() && heights[s.peek()] >= heights[i]) {
+                s.pop();
+            }
+
+            if (s.isEmpty()) {
+                nextSmallerRight[i] = heights.length;
+            } else {
+                nextSmallerRight[i] = s.peek();
+            }
+
+            s.push(i);
+        }
+
+        // Calculating next smaller left
+        s = new Stack<Integer>();
+
+        for (int i = 0; i < heights.length; i++) {
+            while (!s.isEmpty() && heights[s.peek()] >= heights[i]) {
+                s.pop();
+            }
+
+            if (s.isEmpty()) {
+                nextSmallerLeft[i] = -1;
+            } else {
+                nextSmallerLeft[i] = s.peek();
+            }
+
+            s.push(i);
+        }
+
+        // Calculate current area and check if it's the max area
+        for (int i = 0; i < heights.length; i++) {
+            int height = heights[i];
+            int width = nextSmallerRight[i] - nextSmallerLeft[i] - 1;
+
+            int currArea = height * width;
+
+            maxArea = Math.max(maxArea, currArea);
+        }
+
+        return maxArea;
+    }
+
     public static void main(String[] args) {
         // Stack<Integer> stack = new Stack<>();
         // stack.push(1);
@@ -158,5 +210,8 @@ public class StackDSAQuestions {
 
         // String expression = "((a + b))";
         // System.out.println(isDuplicateParentheses(expression));
+
+        // int[] heights = { 2, 1, 5, 6, 2, 3 };
+        // System.out.println(maxAreaInHistogram(heights));
     }
 }
