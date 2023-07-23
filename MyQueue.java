@@ -54,6 +54,105 @@ class ArrayQueue {
     }
 }
 
+class Node {
+    private int data;
+    private Node next;
+
+    Node() {
+        this.data = 0;
+        this.next = null;
+    }
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+
+    public int getData() {
+        return data;
+    }
+
+    public void setData(int data) {
+        this.data = data;
+    }
+
+    public Node getNext() {
+        return next;
+    }
+
+    public void setNext(Node next) {
+        this.next = next;
+    }
+}
+
+class LLQueue {
+    private Node head;
+    private Node tail;
+
+    LLQueue() {
+        this.head = null;
+        this.tail = null;
+    }
+
+    public Node getHead() {
+        return head;
+    }
+
+    public void setHead(Node head) {
+        this.head = head;
+    }
+
+    public Node getTail() {
+        return tail;
+    }
+
+    public void setTail(Node tail) {
+        this.tail = tail;
+    }
+
+    public boolean isEmpty() {
+        return this.head == null && this.tail == null;
+    }
+
+    public void add(int data) {
+        Node newNode = new Node(data);
+
+        if (this.head == null) {
+            this.head = this.tail = newNode;
+            return;
+        }
+
+        this.tail.setNext(newNode);
+        this.tail = newNode;
+    }
+
+    public int remove() {
+        if (isEmpty()) {
+            System.out.println("Queue is empty...");
+            return Integer.MIN_VALUE;
+        }
+
+        int frontData = this.head.getData();
+
+        if (this.head == this.tail) {
+            this.head = this.tail = null;
+        } else {
+            this.head.setNext(head.getNext());
+        }
+
+        return frontData;
+    }
+
+    public int peek() {
+        if (isEmpty()) {
+            System.out.println("Queue is empty...");
+            return Integer.MIN_VALUE;
+        }
+
+        return this.head.getData();
+    }
+}
+
 public class MyQueue {
     public static void main(String[] args) {
         ArrayQueue queue = new ArrayQueue();
