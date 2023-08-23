@@ -118,6 +118,30 @@ class BinaryTree {
             }
         }
     }
+
+    public int treeHeight(Node root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return Math.max(treeHeight(root.getLeftNode()) + 1, treeHeight(root.getRightNode()) + 1);
+    }
+
+    public int nodeCount(Node root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return (nodeCount(root.getLeftNode()) + nodeCount(root.getRightNode())) + 1;
+    }
+
+    public int sumOfNodes(Node root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return (sumOfNodes(root.getLeftNode()) + sumOfNodes(root.getRightNode())) + root.getData();
+    }
 }
 
 public class BuildTreePreorder {
@@ -132,6 +156,10 @@ public class BuildTreePreorder {
         // tree.preorderTraversal(root);
         // tree.inorderTraversal(root);
         // tree.postorderTraversal(root);
-        tree.levelorderTraversal(root);
+        // tree.levelorderTraversal(root);
+
+        // System.out.println("Height of the tree is: " + tree.treeHeight(root));
+        // System.out.println("Number of nodes in the tree: " + tree.nodeCount(root));
+        System.out.println("Sum of nodes: " + tree.sumOfNodes(root));
     }
 }
