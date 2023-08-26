@@ -1,6 +1,19 @@
 import java.util.Queue;
 import java.util.LinkedList;
 
+class Info {
+    public int diameter;
+    public int height;
+
+    public Info() {
+    }
+
+    public Info(int diameter, int height) {
+        this.diameter = diameter;
+        this.height = height;
+    }
+}
+
 class Node {
     private int data;
     private Node left;
@@ -142,9 +155,42 @@ class BinaryTree {
 
         return (sumOfNodes(root.getLeftNode()) + sumOfNodes(root.getRightNode())) + root.getData();
     }
+
+    // Diameter of a tree is defined as the number of nodes in the longest path
+    // between any 2 leaves
+    public int treeDiameter(Node root) { // O(n^2)
+        if (root == null) {
+            return 0;
+        }
+
+        int leftDiameter = treeDiameter(root.getLeftNode());
+        int leftHeight = treeHeight(root.getLeftNode());
+
+        int rightDiameter = treeDiameter(root.getRightNode());
+        int rightHeight = treeHeight(root.getRightNode());
+
+        int selfDiameter = leftHeight + rightHeight + 1;
+
+        return Math.max(selfDiameter, Math.max(leftDiameter, rightDiameter));
+    }
+
+    public Info optimizedTreeDiameter(Node root) { // O(n)
+        if (root == null) {
+            return new Info(0, 0);
+        }
+
+        Info leftInfo = optimizedTreeDiameter(root.getLeftNode());
+        Info rghtInfo = optimizedTreeDiameter(root.getRightNode());
+
+        int selfDiameter = Math.max(leftInfo.height + rghtInfo.height + 1,
+                Math.max(leftInfo.diameter, rghtInfo.diameter));
+        int selfHeight = Math.max(leftInfo.height, rghtInfo.height) + 1;
+
+        return new Info(selfDiameter, selfHeight);
+    }
 }
 
-public class BuildTreePreorder {
+public class BInaryTreeCodes {
     public static void main(String[] args) {
         int[] nodes = { 1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1 };
         BinaryTree tree = new BinaryTree();
@@ -160,6 +206,8 @@ public class BuildTreePreorder {
 
         // System.out.println("Height of the tree is: " + tree.treeHeight(root));
         // System.out.println("Number of nodes in the tree: " + tree.nodeCount(root));
-        System.out.println("Sum of nodes: " + tree.sumOfNodes(root));
+        // System.out.println("Sum of nodes: " + tree.sumOfNodes(root));
+        // System.out.println("Maximum diameter: " + tree.treeDiameter(root));
+        System.out.println("Maximum diameter: " + tree.optimizedTreeDiameter(root).diameter);
     }
 }
