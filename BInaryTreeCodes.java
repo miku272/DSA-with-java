@@ -188,6 +188,38 @@ class BinaryTree {
 
         return new Info(selfDiameter, selfHeight);
     }
+
+    public boolean isIdentical(Node node, Node subRoot) {
+        if (node == null && subRoot == null) {
+            return true;
+        } else if (node == null || subRoot == null || node.getData() != subRoot.getData()) {
+            return false;
+        }
+
+        if (!isIdentical(node.getLeftNode(), subRoot.getLeftNode())) {
+            return false;
+        }
+
+        if (!isIdentical(node.getRightNode(), subRoot.getRightNode())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isSubTree(Node root, Node subRoot) {
+        if (root == null) {
+            return false;
+        }
+
+        if (root.getData() == subRoot.getData()) {
+            if (isIdentical(root, subRoot)) {
+                return true;
+            }
+        }
+
+        return isSubTree(root.getLeftNode(), subRoot) || isSubTree(root.getRightNode(), subRoot);
+    }
 }
 
 public class BInaryTreeCodes {
@@ -208,6 +240,13 @@ public class BInaryTreeCodes {
         // System.out.println("Number of nodes in the tree: " + tree.nodeCount(root));
         // System.out.println("Sum of nodes: " + tree.sumOfNodes(root));
         // System.out.println("Maximum diameter: " + tree.treeDiameter(root));
-        System.out.println("Maximum diameter: " + tree.optimizedTreeDiameter(root).diameter);
+        // System.out.println("Maximum diameter: " +
+        // tree.optimizedTreeDiameter(root).diameter);
+
+        Node subRoot = new Node(2);
+        subRoot.setLeftNode(new Node(4));
+        subRoot.setRightNode(new Node(5)); 
+
+        System.out.println(tree.isSubTree(root, subRoot));
     }
 }
