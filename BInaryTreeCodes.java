@@ -1,4 +1,5 @@
 import java.util.Queue;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 class Info {
@@ -11,6 +12,19 @@ class Info {
     public Info(int diameter, int height) {
         this.diameter = diameter;
         this.height = height;
+    }
+}
+
+class HDInfo {
+    Node node;
+    int hD;
+
+    public HDInfo() {
+    }
+
+    public HDInfo(Node node, int hD) {
+        this.node = node;
+        this.hD = hD;
     }
 }
 
@@ -220,9 +234,50 @@ class BinaryTree {
 
         return isSubTree(root.getLeftNode(), subRoot) || isSubTree(root.getRightNode(), subRoot);
     }
+
+    public void treeTopView(Node root) {
+        Queue<HDInfo> q = new LinkedList<HDInfo>();
+        HashMap<Integer, Node> map = new HashMap<Integer, Node>();
+        int min = 0, max = 0;
+
+        q.add(new HDInfo(root, 0));
+        q.add(null);
+
+        while (!q.isEmpty()) {
+            HDInfo currInfo = q.remove();
+
+            if (currInfo == null) {
+                if (q.isEmpty()) {
+                    break;
+                } else {
+                    q.add(null);
+                }
+            } else {
+                if (!map.containsKey(currInfo.hD)) {
+                map.put(currInfo.hD, currInfo.node);
+            }
+
+            if (currInfo.node.getLeftNode() != null) {
+                q.add(new HDInfo(currInfo.node.getLeftNode(), currInfo.hD - 1));
+
+                min = Math.min(min, currInfo.hD - 1);
+            }
+
+            if (currInfo.node.getRightNode() != null) {
+                q.add(new HDInfo(currInfo.node.getRightNode(), currInfo.hD + 1));
+
+                max = Math.max(max, currInfo.hD + 1);
+            }
+            }
+        }
+
+        for (int i = min; i <= max; i++) {
+            System.out.print(map.get(i).getData() + " ");
+        }
+    }
 }
 
-public class BInaryTreeCodes {
+public class BinaryTreeCodes {
     public static void main(String[] args) {
         int[] nodes = { 1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1 };
         BinaryTree tree = new BinaryTree();
@@ -243,10 +298,12 @@ public class BInaryTreeCodes {
         // System.out.println("Maximum diameter: " +
         // tree.optimizedTreeDiameter(root).diameter);
 
-        Node subRoot = new Node(2);
-        subRoot.setLeftNode(new Node(4));
-        subRoot.setRightNode(new Node(5)); 
+        // Node subRoot = new Node(2);
+        // subRoot.setLeftNode(new Node(4));
+        // subRoot.setRightNode(new Node(5));
 
-        System.out.println(tree.isSubTree(root, subRoot));
+        // System.out.println(tree.isSubTree(root, subRoot));
+
+        tree.treeTopView(root);
     }
 }
