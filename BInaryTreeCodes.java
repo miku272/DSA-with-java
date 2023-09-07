@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Queue;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -254,26 +255,125 @@ class BinaryTree {
                 }
             } else {
                 if (!map.containsKey(currInfo.hD)) {
-                map.put(currInfo.hD, currInfo.node);
-            }
+                    map.put(currInfo.hD, currInfo.node);
+                }
 
-            if (currInfo.node.getLeftNode() != null) {
-                q.add(new HDInfo(currInfo.node.getLeftNode(), currInfo.hD - 1));
+                if (currInfo.node.getLeftNode() != null) {
+                    q.add(new HDInfo(currInfo.node.getLeftNode(), currInfo.hD - 1));
 
-                min = Math.min(min, currInfo.hD - 1);
-            }
+                    min = Math.min(min, currInfo.hD - 1);
+                }
 
-            if (currInfo.node.getRightNode() != null) {
-                q.add(new HDInfo(currInfo.node.getRightNode(), currInfo.hD + 1));
+                if (currInfo.node.getRightNode() != null) {
+                    q.add(new HDInfo(currInfo.node.getRightNode(), currInfo.hD + 1));
 
-                max = Math.max(max, currInfo.hD + 1);
-            }
+                    max = Math.max(max, currInfo.hD + 1);
+                }
             }
         }
 
         for (int i = min; i <= max; i++) {
             System.out.print(map.get(i).getData() + " ");
         }
+    }
+
+    public void kthLevel(Node root, int level, int k) {
+        if (root == null) {
+            return;
+        }
+
+        if (level == k) {
+            System.out.print(root.getData() + " ");
+            return;
+        }
+
+        kthLevel(root.getLeftNode(), level + 1, k);
+        kthLevel(root.getRightNode(), level + 1, k);
+    }
+
+    public boolean getPath(Node root, int n, ArrayList<Node> path) {
+        if (root == null) {
+            return false;
+        }
+
+        path.add(root);
+
+        if (root.getData() == n) {
+            return true;
+        }
+
+        boolean foundLeft = getPath(root.getLeftNode(), n, path);
+        boolean foundRight = getPath(root.getRightNode(), n, path);
+
+        if (foundLeft || foundRight) {
+            return true;
+        }
+
+        path.remove(path.size() - 1);
+        return false;
+    }
+
+    public Node lowestCommonAncestor(Node root, int n1, int n2) {
+        ArrayList<Node> path1 = new ArrayList<Node>();
+        ArrayList<Node> path2 = new ArrayList<Node>();
+
+        getPath(root, n1, path1);
+        getPath(root, n2, path2);
+
+        int i = 0;
+
+        for (; i < path1.size() && i < path2.size(); i++) {
+            if (path1.get(i) != path2.get(i)) {
+                break;
+            }
+        }
+
+        Node lca = path1.get(i - 1);
+        return lca;
+    }
+
+    public int kthAncestorOfNode(Node root, int node, int k) {
+        if (root == null) {
+            return -1;
+        }
+
+        if (root.getData() == node) {
+            return 0;
+        }
+
+        int leftDist = kthAncestorOfNode(root.getLeftNode(), node, k);
+        int rightDist = kthAncestorOfNode(root.getRightNode(), node, k);
+
+        if (leftDist == -1 && rightDist == -1) {
+            return -1;
+        }
+
+        int max = Math.max(leftDist, rightDist);
+
+        if (max + 1 == k) {
+            System.out.println(root.getData());
+        }
+
+        return max + 1;
+    }
+
+    public int transformToSumTree(Node root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftSide = transformToSumTree(root.getLeftNode());
+        int rightSide = transformToSumTree(root.getRightNode());
+
+        int selfSum = (leftSide + rightSide);
+
+        System.out.print(selfSum + " ");
+
+        if (selfSum != 0) {
+            return selfSum;
+        }
+
+        return root.getData();
     }
 }
 
@@ -304,6 +404,14 @@ public class BinaryTreeCodes {
 
         // System.out.println(tree.isSubTree(root, subRoot));
 
-        tree.treeTopView(root);
+        // tree.treeTopView(root);
+
+        // tree.kthLevel(root, 1, 3);
+
+        // System.out.println(tree.lowestCommonAncestor(root, 4, 6).getData());
+
+        // tree.kthAncestorOfNode(root, 5, 2);
+
+        tree.transformToSumTree(root);
     }
 }
