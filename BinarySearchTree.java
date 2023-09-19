@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class Node {
     private int data;
     private Node leftNode;
@@ -101,6 +103,30 @@ public class BinarySearchTree {
         return root;
     }
 
+    public static void printPath(ArrayList<Integer> path) {
+        for (int i = 0; i < path.size(); i++) {
+            System.out.print(path.get(i) + " ");
+        }
+        System.out.print("\n");
+    }
+
+    public static void rootToLeafPaths(Node root, ArrayList<Integer> path) {
+        if (root == null) {
+            return;
+        }
+
+        path.add(root.getData());
+
+        if (root.getLeftNode() == null && root.getRightNode() == null) {
+            printPath(path);
+        }
+
+        rootToLeafPaths(root.getLeftNode(), path);
+        rootToLeafPaths(root.getRightNode(), path);
+
+        path.remove(path.size() - 1);
+    }
+
     public static void printInRange(Node root, int k1, int k2) {
         if (root == null) {
             return;
@@ -127,6 +153,20 @@ public class BinarySearchTree {
         inorderTraversal(root.getRightNode());
     }
 
+    public static boolean isValidBST(Node root, Node min, Node max) {
+        if (root == null) {
+            return true;
+        }
+
+        if (min != null && root.getData() <= min.getData()) {
+            return false;
+        } else if (max != null && root.getData() >= max.getData()) {
+            return false;
+        }
+
+        return isValidBST(root.getLeftNode(), min, root) && isValidBST(root.getRightNode(), root, max);
+    }
+
     public static void main(String[] args) {
         // int[] values = { 5, 1, 3, 4, 2, 7 };
         int[] values = { 8, 5, 3, 1, 4, 6, 10, 11, 14 };
@@ -140,6 +180,7 @@ public class BinarySearchTree {
 
         // System.out.println(searchBST(root, 0));
 
-        printInRange(root, 5, 12);
+        // printInRange(root, 5, 12);
+        rootToLeafPaths(root, new ArrayList<Integer>());
     }
 }
