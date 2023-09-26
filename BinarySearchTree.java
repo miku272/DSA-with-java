@@ -167,6 +167,20 @@ public class BinarySearchTree {
         return isValidBST(root.getLeftNode(), min, root) && isValidBST(root.getRightNode(), root, max);
     }
 
+    public static void mirrorBST(Node root) {
+        if (root == null) {
+            return;
+        }
+
+        mirrorBST(root.getLeftNode());
+        mirrorBST(root.getRightNode());
+
+        Node tempNode = root.getLeftNode();
+
+        root.setLeftNode(root.getRightNode());
+        root.setRightNode(tempNode);
+    }
+
     public static void main(String[] args) {
         // int[] values = { 5, 1, 3, 4, 2, 7 };
         int[] values = { 8, 5, 3, 1, 4, 6, 10, 11, 14 };
@@ -181,6 +195,15 @@ public class BinarySearchTree {
         // System.out.println(searchBST(root, 0));
 
         // printInRange(root, 5, 12);
-        rootToLeafPaths(root, new ArrayList<Integer>());
+        // rootToLeafPaths(root, new ArrayList<Integer>());
+
+        System.out.print("Before mirroring: ");
+        inorderTraversal(root);
+        System.out.print("\n");
+
+        mirrorBST(root);
+
+        System.out.print("After Mirroring: ");
+        inorderTraversal(root);
     }
 }
