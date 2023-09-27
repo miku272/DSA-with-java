@@ -181,6 +181,23 @@ public class BinarySearchTree {
         root.setRightNode(tempNode);
     }
 
+    public static Node sortedArrayToBalancedBST(int[] arr, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+
+        int mid = (start + end) / 2;
+        Node root = new Node(arr[mid]);
+
+        Node leftNode = sortedArrayToBalancedBST(arr, start, mid - 1);
+        Node rightNode = sortedArrayToBalancedBST(arr, mid + 1, end);
+
+        root.setLeftNode(leftNode);
+        root.setRightNode(rightNode);
+
+        return root;
+    }
+
     public static void main(String[] args) {
         // int[] values = { 5, 1, 3, 4, 2, 7 };
         int[] values = { 8, 5, 3, 1, 4, 6, 10, 11, 14 };
@@ -197,13 +214,18 @@ public class BinarySearchTree {
         // printInRange(root, 5, 12);
         // rootToLeafPaths(root, new ArrayList<Integer>());
 
-        System.out.print("Before mirroring: ");
-        inorderTraversal(root);
-        System.out.print("\n");
+        // System.out.print("Before mirroring: ");
+        // inorderTraversal(root);
+        // System.out.print("\n");
 
-        mirrorBST(root);
+        // mirrorBST(root);
 
-        System.out.print("After Mirroring: ");
-        inorderTraversal(root);
+        // System.out.print("After Mirroring: ");
+        // inorderTraversal(root);
+
+        int[] arr = { 3, 5, 6, 8, 10, 11, 12 };
+        Node root1 = sortedArrayToBalancedBST(arr, 0, arr.length - 1);
+
+        inorderTraversal(root1);
     }
 }
