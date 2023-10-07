@@ -1,5 +1,26 @@
 import java.util.ArrayList;
 
+class BSTInfo {
+    public boolean isBST;
+    public int size;
+    public int min;
+    public int max;
+
+    public BSTInfo() {
+        this.isBST = false;
+        this.size = 0;
+        this.min = Integer.MIN_VALUE;
+        this.max = Integer.MAX_VALUE;
+    }
+
+    public BSTInfo(boolean isBST, int size, int min, int max) {
+        this.isBST = isBST;
+        this.size = size;
+        this.min = min;
+        this.max = max;
+    }
+}
+
 class Node {
     private int data;
     private Node leftNode;
@@ -143,6 +164,16 @@ public class BinarySearchTree {
         }
     }
 
+    public static void storeInorderTraversal(Node root, ArrayList<Integer> arr) {
+        if (root == null) {
+            return;
+        }
+
+        storeInorderTraversal(root.getLeftNode(), arr);
+        arr.add(root.getData());
+        storeInorderTraversal(root.getRightNode(), arr);
+    }
+
     public static void inorderTraversal(Node root) {
         if (root == null) {
             return;
@@ -196,6 +227,87 @@ public class BinarySearchTree {
         root.setRightNode(rightNode);
 
         return root;
+    }
+
+    public static Node convertBSTToBalancedBST(Node root) {
+        ArrayList<Integer> arr = new ArrayList<Integer>();
+        int[] newArr = new int[arr.size()];
+
+        for (int i = 0; i < arr.size(); i++) {
+            newArr[i] = arr.get(i);
+        }
+
+        storeInorderTraversal(root, arr);
+
+        Node newRoot = sortedArrayToBalancedBST(newArr, 0, newArr.length - 1);
+
+        return newRoot;
+    }
+
+    public static int maxBST = 0;
+
+    public static BSTInfo largestBSTInBinaryTree(Node root) {
+        if (root == null) {
+            return new BSTInfo(false, 0, Integer.MAX_VALUE, Integer.MIN_VALUE);
+        }
+
+        BSTInfo leftInfo = largestBSTInBinaryTree(root.getLeftNode());
+        BSTInfo rightInfo = largestBSTInBinaryTree(root.getRightNode());
+
+        int size = leftInfo.size + rightInfo.size + 1;
+        int min = Math.min(root.getData(), Math.min(leftInfo.min, rightInfo.min));
+        int max = Math.max(root.getData(), Math.max(leftInfo.max, rightInfo.max));
+
+        if (root.getData() <= leftInfo.max || root.getData() >= rightInfo.max) {
+            return new BSTInfo(false, size, min, max);
+        }
+
+        if (leftInfo.isBST && rightInfo.isBST) {
+            maxBST = Math.max(maxBST, size);
+
+            return new BSTInfo(true, size, min, max);
+        }
+
+        return new BSTInfo(false, size, min, max);
+    }
+
+    public static ArrayList<Integer> mergeInorderArr(ArrayList<Integer> root1Arr, ArrayList<Integer> root2Arr) {
+        ArrayList<Integer> finalArr = new ArrayList<Integer>();
+        int i = 0, j = 0;
+
+        while (i < root1Arr.size() && j < root2Arr.size()) {
+            if (root1Arr.get(i) <= root2Arr.get(j)) {
+                finalArr.add(root1Arr.get(i));
+                i++;
+            } else {
+                finalArr.add(root2Arr.get(j));
+                j++;
+            }
+        }
+
+        while (i < root1Arr.size()) {
+            finalArr.add(root1Arr.get(i));
+            i++;
+        }
+
+        while (j < root2Arr.size()) {
+            finalArr.add(root2Arr.get(j));
+            j++;
+        }
+
+        return finalArr;
+    }
+
+    public static Node mergeBST(Node root1, Node root2) {
+        ArrayList<Integer> root1Arr = new ArrayList<Integer>();
+        ArrayList<Integer> root2Arr = new ArrayList<Integer>();
+
+        storeInorderTraversal(root1, root1Arr);
+        storeInorderTraversal(root2, root2Arr);
+
+        ArrayList<Integer> finalArr = mergeInorderArr(root1Arr, root2Arr);
+
+        return sortedArrayToBalancedBST(new int[finalArr.size()], 0, finalArr.size() - 1);
     }
 
     public static void main(String[] args) {
