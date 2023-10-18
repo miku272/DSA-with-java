@@ -15,6 +15,14 @@ class MyHeap {
         this.minHeap.set(indexB, temp);
     }
 
+    private void swap(int[] arr, int indexA, int indexB) {
+        int temp = arr[indexA];
+
+        arr[indexA] = arr[indexB];
+
+        arr[indexB] = temp;
+    }
+
     private void heapify(int index) {
         int left = (2 * index) + 1;
         int right = (2 * index) + 2;
@@ -32,6 +40,26 @@ class MyHeap {
             this.swap(index, minIndex);
 
             heapify(minIndex);
+        }
+    }
+
+    private void heapify(int[] arr, int index, int size) {
+        int left = (2 * index) + 1;
+        int right = (2 * index) + 2;
+        int maxIndex = index;
+
+        if (left < size && arr[left] > arr[maxIndex]) {
+            maxIndex = left;
+        }
+
+        if (right < size && arr[right] > arr[maxIndex]) {
+            maxIndex = right;
+        }
+
+        if (maxIndex != index) {
+            swap(arr, index, maxIndex);
+
+            heapify(arr, maxIndex, size);
         }
     }
 
@@ -74,20 +102,50 @@ class MyHeap {
     public boolean isEmpty() {
         return this.minHeap.isEmpty();
     }
+
+    public void heapSort(int[] arr) { // Max heap for ascending Order. Min heap for descending order
+        // Build max heap
+        for (int i = arr.length / 2; i >= 0; i--) {
+            this.heapify(arr, i, arr.length);
+        }
+
+        // Push largest element to end
+        for (int i = arr.length - 1; i > 0; i--) {
+            // Swap largest (first index) with last index
+            swap(arr, 0, i);
+
+            heapify(arr, 0, i);
+        }
+    }
 }
 
 public class MyHeapPractice {
     public static void main(String[] args) {
         MyHeap heap = new MyHeap();
 
-        heap.insert(3);
-        heap.insert(4);
-        heap.insert(1);
-        heap.insert(5);
+        // heap.insert(3);
+        // heap.insert(4);
+        // heap.insert(1);
+        // heap.insert(5);
 
-        while (!heap.isEmpty()) {
-            System.out.print(heap.peek() + " ");
-            heap.delete();
+        // while (!heap.isEmpty()) {
+        // System.out.print(heap.peek() + " ");
+        // heap.delete();
+        // }
+
+        int[] arr = { 1, 2, 4, 5, 3 };
+
+        System.out.print("Before Sorting: ");
+        for (int i : arr) {
+            System.out.print(i + " ");
+        }
+        System.out.print("\n");
+
+        heap.heapSort(arr);
+
+        System.out.print("After Sorting: ");
+        for (int i : arr) {
+            System.out.print(i + " ");
         }
     }
 }
